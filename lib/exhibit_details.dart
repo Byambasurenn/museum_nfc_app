@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class ExhibitDetailsPage extends StatelessWidget {
   static final String path = "lib/exhibit_details.dart";
   final String image = "assets/exhibit/golden_boots.jpg";
+  final Map<String, String> exhibit;
+  ExhibitDetailsPage(this.exhibit);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +15,7 @@ class ExhibitDetailsPage extends StatelessWidget {
                   color: Colors.black26
               ),
               height: 400,
-              child: Image.asset(image, fit: BoxFit.fitWidth)),
+              child: Image.asset(exhibit['image'], fit: BoxFit.fitWidth)),
           SingleChildScrollView(
             padding: const EdgeInsets.only(top: 16.0,bottom: 20.0),
             child: Column(
@@ -23,7 +25,7 @@ class ExhibitDetailsPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal:16.0),
                   child: Text(
-                    "Богд хааны\nАлтан Гутал",
+                    exhibit['title'],
                     style: TextStyle(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -108,13 +110,7 @@ class ExhibitDetailsPage extends StatelessWidget {
                       ),),
                       const SizedBox(height: 10.0),
                       Text(
-                        "Монгол үндэсний хувцас нь төрийн бэлгэдэл утгыг хадгалж явдаг бөгөөд айл гэрийг төр улсын үндэс гэж үзэх тул шинэ айл бүтэхэд үндэсний хувцсаа өмсөж ёсолдог заншилтай.", textAlign: TextAlign.justify, style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 14.0
-                      ),),
-                      const SizedBox(height: 10.0),
-                      Text(
-                        "Хааны эдэлж хэрэглэж байсан алтадсан савхин гадартай, ширэн ултай энэ гутал нь Монголчуудын дунд Богд хааны алтан гутал хэмээн нэрлэгддэг. \n Эл гутал нь 43,5 см өндөр, 35 см урт.", textAlign: TextAlign.justify, style: TextStyle(
+                        exhibit['description'], textAlign: TextAlign.justify, style: TextStyle(
                           fontWeight: FontWeight.w300,
                           fontSize: 14.0
                       ),),

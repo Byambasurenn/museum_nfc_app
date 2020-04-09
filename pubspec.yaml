@@ -28,6 +28,8 @@ dev_dependencies:
   flutter_launcher_icons: "^0.7.0"
   flutter_test:
     sdk: flutter
+  nfc_manager:
+    path: ./flutter-nfc-manager/
 
 flutter_icons:
   ios: true
@@ -48,6 +50,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/exhibit/golden_boots.jpg
+    - assets/exhibit/red_palace.jpeg
+    - assets/exhibit/khalkh_gate.jpg
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
