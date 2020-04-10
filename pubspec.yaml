@@ -23,6 +23,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+  http: ^0.12.0+4
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.0"
@@ -52,6 +53,9 @@ flutter:
     - assets/exhibit/golden_boots.jpg
     - assets/exhibit/red_palace.jpeg
     - assets/exhibit/khalkh_gate.jpg
+    - assets/exhibit/three_gate.jpeg
+    - assets/exhibit/peace_gate.jpeg
+    - assets/nfc.gif
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
