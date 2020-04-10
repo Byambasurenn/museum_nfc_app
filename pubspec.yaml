@@ -27,6 +27,7 @@ dependencies:
   cached_network_image: ^2.0.0
   path_provider: ^1.6.5
   matrix_gesture_detector: ^0.1.0
+  audioplayers: ^0.15.0
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.0"
@@ -59,6 +60,7 @@ flutter:
     - assets/exhibit/three_gate.jpeg
     - assets/exhibit/peace_gate.jpeg
     - assets/nfc.gif
+    - assets/audio/Theme.mp3
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
