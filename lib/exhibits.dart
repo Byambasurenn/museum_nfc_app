@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import './models/Exhibit.dart';
 
 class Exhibits extends StatelessWidget {
-  final List<Map<String, String>> exhibits;
+  final List<Exhibit> exhibits;
   Exhibits(this.exhibits);
   @override
   Widget build(BuildContext context) {
@@ -10,8 +11,8 @@ class Exhibits extends StatelessWidget {
             .map((element) => Card(
                   child: Column(
                     children: <Widget>[
-                      Image.asset(element['image']),
-                      Text(element['title'])
+                      Image.asset(element.image),
+                      Text(element.title)
                     ],
                   ),
                 ))

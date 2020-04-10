@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:museumnfcapp/main.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -6,45 +7,12 @@ import 'dart:convert';
 
 import './exhibits.dart';
 import './exhibit_details.dart';
+import './models/Exhibit.dart';
 
 
-Future<Exhibit> fetchExhibit(String nfcId) async {
-  final response =
-  await http.get('http://66a04f9e.ngrok.io/json/exhibits/'+nfcId+'/');
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return Exhibit.fromJson(json.decode(response.body));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load exhibit');
-  }
-}
-
-class Exhibit {
-  final String nfcId;
-  final int id;
-  final String title;
-  final String description;
-  final String image;
-
-  Exhibit({this.nfcId, this.id, this.title, this.description, this.image});
-
-  factory Exhibit.fromJson(Map<String, dynamic> json) {
-    return Exhibit(
-      nfcId: json['nfc_id'],
-      id: json['id'],
-      title: json['title'],
-      description: json['description'],
-      image: json['image'],
-    );
-  }
-}
 
 class ExhibitManager extends StatefulWidget {
-  final List<Map<String, String>> startingExhibits;
+  final List<Exhibit> startingExhibits;
 
   ExhibitManager(this.startingExhibits);
 
@@ -56,14 +24,32 @@ class ExhibitManager extends StatefulWidget {
 
 class _ExhibitManagerState extends State<ExhibitManager> {
   ValueNotifier<dynamic> result = ValueNotifier(null);
-  List<Map<String, String>> _exhibits = [];
-  Future<Exhibit> tempExhibit;
+  List<Exhibit> _exhibits = [];
+  Exhibit mainEx;
+  bool responseBack=false;
 
   @override
   void initState() {
     _exhibits = widget.startingExhibits;
     super.initState();
 
+  }
+  void fetchExhibit(String nfcId) async {
+    final response =
+    await http.get('http://66a04f9e.ngrok.io/json/exhibits/'+nfcId+'/');
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      Exhibit tempEx =  Exhibit.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+      setState(() {
+        mainEx = tempEx;
+        responseBack = true;
+      });
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load exhibit');
+    }
   }
 
   @override
@@ -119,18 +105,26 @@ class _ExhibitManagerState extends State<ExhibitManager> {
       result.value = tag.data['id'].map((element)=> element.toRadixString(16).padLeft(2, '0').toUpperCase()).join(":");
       String temp = tag.data['id'].map((element)=> element.toRadixString(16).padLeft(2, '0').toUpperCase()).join(":");
       //result.value=tag.data['ndef']['cachedMessage']['records'][0]['payload'].map((element) => String.fromCharCode(element)).join(); //tag.data['ndef']['cachedMessage']['records']  .forEach((element) => String.fromCharCode(element))
-      tempExhibit = fetchExhibit(temp);
+      await fetchExhibit(temp);
       NfcManager.instance.stopSession();
       Navigator.pop(context);
-      for(var i=0; i<=_exhibits.length; i++){
-        Map<String,String> tempMap = _exhibits[i];
-        if(tempMap['id']==temp){
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ExhibitDetailsPage(_exhibits[i])),
-          );
-        }
+
+      if(responseBack){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ExhibitDetailsPage(mainEx)),
+        );
       }
+
+//      for(var i=0; i<=_exhibits.length; i++){
+//        Map<String,String> tempMap = _exhibits[i];
+//        if(tempMap['id']==temp){
+//          Navigator.push(
+//            context,
+//            MaterialPageRoute(builder: (context) => ExhibitDetailsPage(_exhibits[i])),
+//          );
+//        }
+//      }
     });
   }
 }
