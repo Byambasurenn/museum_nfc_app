@@ -6,6 +6,8 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'image_zoom.dart';
 
+import './database_helper.dart';
+
 class ExhibitDetailsPage extends StatefulWidget {
   final Exhibit exhibitStart;
   ExhibitDetailsPage(this.exhibitStart);
@@ -19,11 +21,13 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
   static final String path = "lib/exhibit_details.dart";
   final String image = "assets/exhibit/golden_boots.jpg";
   Exhibit exhibit;
+  GlobalKey _keyImgContainer = GlobalKey();
   Duration _duration = new Duration();
   Duration _position = new Duration();
   AudioPlayer advancedPlayer;
   AudioCache audioCache;
   bool isPlaying = false;
+  bool isAddedToFav = false;
 
   @override
   void initState() {
@@ -52,6 +56,16 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
   pause() {
     advancedPlayer.pause();
   }
+  _save() async {
+    Exhibit exhibitO = Exhibit();
+    exhibitO.nfcId = exhibit.nfcId;
+    exhibitO.title = exhibit.title;
+    exhibitO.description = exhibit.description;
+    exhibitO.image = exhibit.image;
+    DatabaseHelper helper = DatabaseHelper.instance;
+    int id = await helper.insert(exhibitO);
+    print('inserted row: $id');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,15 +84,18 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
           children: <Widget>[
             Container(
               foregroundDecoration: BoxDecoration(color: Colors.black26),
-              height: 400,
-              child: CachedNetworkImage(imageUrl: exhibit.image),
+              height: 350,
+              width: double.infinity,
+              child: CachedNetworkImage(
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  imageUrl: exhibit.image),
             ),
             SingleChildScrollView(
               padding: const EdgeInsets.only(top: 16.0, bottom: 20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(height: 250),
+                  const SizedBox(height: 250,),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
@@ -108,8 +125,10 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
                       Spacer(),
                       IconButton(
                         color: Colors.white,
-                        icon: Icon(Icons.favorite_border),
-                        onPressed: () {},
+                        icon: isAddedToFav ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
+                        onPressed: () {
+                          _save();
+                        },
                       )
                     ],
                   ),
