@@ -49,13 +49,15 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
           _position = p;
         });
   }
-
   play() {
-    audioCache.play('audio/Theme.mp3');
+    advancedPlayer.play(exhibit.audio);
+    advancedPlayer.setReleaseMode(ReleaseMode.LOOP);
   }
 
   pause() {
-    advancedPlayer.pause();
+    advancedPlayer.setReleaseMode(ReleaseMode.RELEASE);
+//    advancedPlayer.pause();
+    advancedPlayer.stop();
   }
 
   _save() async {
@@ -64,6 +66,7 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
     exhibitO.title = exhibit.title;
     exhibitO.description = exhibit.description;
     exhibitO.image = exhibit.image;
+    exhibitO.audio = exhibit.audio;
     DatabaseHelper helper = DatabaseHelper.instance;
     int id = await helper.insert(exhibitO);
     print('inserted row: $id');
@@ -129,8 +132,9 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
                       exhibit.title,
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 28.0,
-                          fontWeight: FontWeight.bold),
+                          fontSize: 30.0,
+                          fontFamily: 'Caslon',
+                          fontWeight: FontWeight.w300),
                     ),
                   ),
                   Row(

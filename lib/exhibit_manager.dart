@@ -22,27 +22,50 @@ class ExhibitManager extends StatefulWidget {
   }
 }
 
+
 class _ExhibitManagerState extends State<ExhibitManager> {
   ValueNotifier<dynamic> result = ValueNotifier(null);
   List<Exhibit> _exhibits = [];
   Exhibit mainEx;
+  List<Exhibit> mainExList;
   bool responseBack = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   void initState() {
     _exhibits = widget.startingExhibits;
+    fetchAllExhibit();
     super.initState();
 //    SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
   void fetchExhibit(String nfcId) async {
     final response =
-        await http.get('http://58ed020c.ngrok.io/json/exhibits/' + nfcId + '/');
+        await http.get('http://ac01024b.ngrok.io/json/exhibits/' + nfcId + '/');
     if (response.statusCode == 200) {
       Exhibit tempEx =
           Exhibit.fromJson(json.decode(utf8.decode(response.bodyBytes)));
       setState(() {
         mainEx = tempEx;
+        responseBack = true;
+      });
+    } else {
+      throw Exception('Failed to load exhibit');
+    }
+  }
+
+  void fetchAllExhibit() async {
+    final response =
+    await http.get('http://ac01024b.ngrok.io/json/exhibits/');
+    if (response.statusCode == 200) {
+      List<Exhibit> tempExList = new List();
+      Map<String,dynamic> tempJson = json.decode(utf8.decode(response.bodyBytes));
+      print(tempJson['results'][6]['description']);
+      for(var i = 0; i<tempJson['count']; i++) {
+        tempExList.add(Exhibit.fromJson(tempJson['results'][i]));
+      }
+      setState(() {
+        print(tempExList);
+        mainExList = tempExList;
         responseBack = true;
       });
     } else {
@@ -137,7 +160,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
               ),
               CarouselSlider(
                 height: 400.0,
-                items: [1, 2, 3, 4, 5].map((i) {
+                items: [1, 2, 3].map((i) {
                   return Builder(
                     builder: (BuildContext context) {
                       return Container(
@@ -171,11 +194,11 @@ class _ExhibitManagerState extends State<ExhibitManager> {
                                 borderRadius: BorderRadius.circular(15)),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15),
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                    'http://www.bogdkhaanpalace.mn/uploads/images/6%282%29.JPG',
+                                  child: mainExList==null ? Center(child: CircularProgressIndicator(),) : CachedNetworkImage(
+                                    imageUrl: mainExList[i].image,
                                     fit: BoxFit.fill,
                                     width: double.infinity,
+                                    height: double.infinity,
                                   ),
                                 ),
                               ),
@@ -185,7 +208,8 @@ class _ExhibitManagerState extends State<ExhibitManager> {
                                 child: SizedBox(
                                   width: MediaQuery.of(context).size.width*0.6,
                                   child: Text(
-                                    'Богд Хааны Ордны үзмэр',
+                                    mainExList==null ? 'Богд Хааны Ордны үзмэр' :
+                                    mainExList[i].title,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 30, fontFamily: 'Caslon'),
                                   ),
@@ -204,7 +228,14 @@ class _ExhibitManagerState extends State<ExhibitManager> {
                                             new BorderRadius.circular(15),
                                         side: BorderSide(
                                             color: Colors.blue[900])),
-                                    onPressed: _tagRead,
+                                    onPressed: (){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ExhibitDetailsPage(mainExList[i]))
+//            MaterialPageRoute(builder: (context) => ImageZoomPage(exhibit.image)),
+                                      );
+                                    },
                                     color: Theme.of(context).primaryColor,
                                     textColor: Colors.white,
                                     child: Text(
@@ -232,7 +263,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
               ),
               CarouselSlider(
                 height: 400.0,
-                items: [1, 2, 3, 4, 5].map((i) {
+                items: [1, 2, 3].map((i) {
                   return Builder(
                     builder: (BuildContext context) {
                       return Container(
@@ -266,11 +297,11 @@ class _ExhibitManagerState extends State<ExhibitManager> {
                                     borderRadius: BorderRadius.circular(15)),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15),
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                    'http://www.bogdkhaanpalace.mn/uploads/images/6%282%29.JPG',
+                                  child: mainExList==null ? Center(child: CircularProgressIndicator(),) : CachedNetworkImage(
+                                    imageUrl: mainExList[mainExList.length-i].image,
                                     fit: BoxFit.fill,
                                     width: double.infinity,
+                                    height: double.infinity,
                                   ),
                                 ),
                               ),
@@ -280,7 +311,8 @@ class _ExhibitManagerState extends State<ExhibitManager> {
                                   child: SizedBox(
                                     width: MediaQuery.of(context).size.width*0.6,
                                     child: Text(
-                                      'Богд Хааны Ордны үзмэр',
+                                      mainExList==null ? 'Богд Хааны Ордны үзмэр' :
+                                      mainExList[mainExList.length-i].title,
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 30, fontFamily: 'Caslon'),
                                     ),
@@ -299,7 +331,14 @@ class _ExhibitManagerState extends State<ExhibitManager> {
                                         new BorderRadius.circular(15),
                                         side: BorderSide(
                                             color: Colors.blue[900])),
-                                    onPressed: _tagRead,
+                                    onPressed: (){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ExhibitDetailsPage(mainExList[i]))
+//            MaterialPageRoute(builder: (context) => ImageZoomPage(exhibit.image)),
+                                      );
+                                    },
                                     color: Theme.of(context).primaryColor,
                                     textColor: Colors.white,
                                     child: Text(
@@ -355,27 +394,28 @@ class _ExhibitManagerState extends State<ExhibitManager> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
-                child: Text('Drawer Header'),
+                child: Column(children: <Widget>[
+                  Text('Богд Хааны Ордон Музей', style: TextStyle(fontWeight: FontWeight.w300, color: Colors.white),),
+                  SizedBox(height: 10,),
+                  Image.asset('assets/launcher/icon.png',width: 100,height: 100,)
+                ],),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                 ),
               ),
               ListTile(
-                title: Text('Item 1'),
+                title: Text('Дуртай Үзмэрүүд', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FavoritesPage()),
+                  );
                 },
               ),
               ListTile(
-                title: Text('Item 2'),
+                title: Text('Үзмэр унших', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
+                  _tagRead();
                 },
               ),
             ],
@@ -423,7 +463,9 @@ class _ExhibitManagerState extends State<ExhibitManager> {
               element.toRadixString(16).padLeft(2, '0').toUpperCase())
           .join(":");
       //result.value=tag.data['ndef']['cachedMessage']['records'][0]['payload'].map((element) => String.fromCharCode(element)).join(); //tag.data['ndef']['cachedMessage']['records']  .forEach((element) => String.fromCharCode(element))
-      await fetchExhibit(temp);
+      if(temp!=null){
+        await fetchExhibit(temp);
+      }
       NfcManager.instance.stopSession();
       Navigator.pop(context);
 
