@@ -1,0 +1,33 @@
+{
+  "@@last_modified": "2020-04-14T17:38:54.681634",
+  "title": "Холбогдох",
+  "@title": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnsubmit": "Илгээх",
+  "@btnsubmit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "locale": "mn",
+  "@locale": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lblname": "Нэр",
+  "@lblname": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lblphone": "Утас",
+  "@lblphone": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lblemail": "И-мейл",
+  "@lblemail": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:museumnfcapp/select_language.dart';
+import 'package:museumnfcapp/plan.dart';
+import 'package:museumnfcapp/contacts.dart';
 import 'package:museumnfcapp/main.dart';
+import 'package:museumnfcapp/time_table.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:carousel_slider/carousel_slider.dart';
@@ -408,6 +412,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
                 ),
               ),
               ListTile(
+                leading: Icon(Icons.favorite),
                 title: Text('Дуртай Үзмэрүүд', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
                   Navigator.pop(context);
@@ -419,6 +424,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
               ),
               Divider(),
               ListTile(
+                leading: Icon(Icons.add_to_home_screen),
                 title: Text('Үзмэр унших', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
                   Navigator.pop(context);
@@ -427,30 +433,50 @@ class _ExhibitManagerState extends State<ExhibitManager> {
               ),
               Divider(),
               ListTile(
+                leading: Icon(Icons.map),
                 title: Text('План зураг', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PlanPage()),
+                  );
                 },
               ),
               Divider(),
               ListTile(
+                leading: Icon(Icons.access_time),
                 title: Text('Цагийн хуваарь', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TimeTablePage()),
+                  );
                 },
               ),
               Divider(),
               ListTile(
+                leading: Icon(Icons.contacts),
                 title: Text('Холбоо барих', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ContactsPage()),
+                  );
                 },
               ),
               Divider(),
               ListTile(
+                leading: Icon(Icons.language),
                 title: Text('Хэл сонгох', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SelectLanguagePage()),
+                  );
                 },
               ),
               Divider(),
