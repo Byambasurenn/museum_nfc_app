@@ -37,7 +37,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
 
   void fetchExhibit(String nfcId) async {
     final response =
-        await http.get('http://ea4bae29.ngrok.io/json/exhibits/' + nfcId + '/');
+        await http.get('http://58ed020c.ngrok.io/json/exhibits/' + nfcId + '/');
     if (response.statusCode == 200) {
       Exhibit tempEx =
           Exhibit.fromJson(json.decode(utf8.decode(response.bodyBytes)));

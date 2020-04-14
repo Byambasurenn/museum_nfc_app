@@ -46,15 +46,7 @@ class DatabaseHelper {
 
   // SQL string to create the database
   Future _onCreate(Database db, int version) async {
-    await db.execute('''
-              CREATE TABLE $tableExhibits (
-                $columnId INTEGER PRIMARY KEY,
-                $columnNfcId TEXT NOT NULL,
-                $columnTitle TEXT NOT NULL,
-                $columnDescription TEXT NOT NULL,
-                $columnImage TEXT NOT NULL,
-              );
-              ''');
+    await db.execute(" CREATE TABLE $tableExhibits ($columnId INTEGER PRIMARY KEY, $columnNfcId TEXT NOT NULL, $columnTitle TEXT NOT NULL, $columnDescription TEXT NOT NULL, $columnImage TEXT NOT NULL)");
   }
 
   // Database helper methods:
@@ -76,6 +68,48 @@ class DatabaseHelper {
     }
     return null;
   }
+
+  Future<Exhibit> queryExhibitWithNfc(String nfcId) async {
+    Database db = await database;
+    List<Map> maps = await db.query(tableExhibits,
+        columns: [columnId, columnNfcId, columnTitle, columnDescription, columnImage],
+        where: '$columnNfcId = ?',
+        whereArgs: [nfcId]);
+    if (maps.length > 0) {
+      return Exhibit.fromJson(maps.first);
+    }
+    return null;
+  }
+
+  Future<int> queryDeleteRow(String nfcId) async {
+    Database db = await database;
+    int result = await db.delete(tableExhibits, where: '$columnNfcId = ?',
+        whereArgs: [nfcId]);
+    if (result > 0) {
+      return result;
+    }
+    return null;
+  }
+
+
+  Future<List<Exhibit>> queryAllExhibit() async {
+    Database db = await database;
+    List<Exhibit> exList = new List();
+    List<Map> maps = await db.query(tableExhibits,
+        columns: [columnId, columnNfcId, columnTitle, columnDescription, columnImage],);
+    if (maps.length > 0) {
+      for(var i = 0; i<maps.length; i++){
+        exList.add(Exhibit.fromJson(maps[i]));
+        print(maps[i].keys);
+        print(exList);
+      }
+      print(exList);
+      return exList;
+    }
+    return exList;
+  }
+
+
 
 // TODO: queryAllWords()
 // TODO: delete(int id)

@@ -33,6 +33,7 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
   void initState() {
     exhibit = widget.exhibitStart;
     super.initState();
+    _isFavorite();
     initPlayer();
   }
 
@@ -56,6 +57,7 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
   pause() {
     advancedPlayer.pause();
   }
+
   _save() async {
     Exhibit exhibitO = Exhibit();
     exhibitO.nfcId = exhibit.nfcId;
@@ -65,6 +67,31 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
     DatabaseHelper helper = DatabaseHelper.instance;
     int id = await helper.insert(exhibitO);
     print('inserted row: $id');
+  }
+
+  _delete(String nfcId) async{
+    DatabaseHelper helper = DatabaseHelper.instance;
+    int result = await helper.queryDeleteRow(nfcId);
+    if(result>0){
+      print('$result row deleted');
+    }else{
+      print('failed to delete row');
+    }
+  }
+
+  Future<bool> _isFavorite() async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    Exhibit exhibitTemp = await helper.queryExhibitWithNfc(exhibit.nfcId);
+    if (exhibitTemp == null) {
+      print('read row empty');
+      return false;
+    } else {
+      print('read row ${exhibitTemp.nfcId}');
+      setState(() {
+        isAddedToFav = true;
+      });
+      return true;
+    }
   }
 
   @override
@@ -123,13 +150,31 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
                         ),
                       ),
                       Spacer(),
-                      IconButton(
-                        color: Colors.white,
-                        icon: isAddedToFav ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
-                        onPressed: () {
-                          _save();
-                        },
+                      Container(
+                        child: isAddedToFav ?
+                        IconButton(
+                          color: Colors.red,
+                          icon: Icon(Icons.favorite),
+                          onPressed: () {
+                            _delete(exhibit.nfcId);
+                            setState(() {
+                              isAddedToFav = false;
+                            });
+                          },
+                        )
+                            :
+                        IconButton(
+                          color: Colors.white,
+                          icon: Icon(Icons.favorite_border),
+                          onPressed: () {
+                            _save();
+                            setState(() {
+                              isAddedToFav = true;
+                            });
+                          },
+                        ),
                       )
+
                     ],
                   ),
                   Container(

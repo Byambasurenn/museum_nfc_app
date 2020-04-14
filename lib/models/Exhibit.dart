@@ -9,7 +9,7 @@ class Exhibit {
   factory Exhibit.fromJson(Map<String, dynamic> json) {
     return Exhibit(
       nfcId: json['nfc_id'],
-      id: json['id'],
+      id: json['id'].toString(),
       title: json['title'],
       description: json['description'],
       image: json['image'],
