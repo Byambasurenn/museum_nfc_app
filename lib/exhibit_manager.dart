@@ -15,7 +15,8 @@ import './favorites.dart';
 
 class ExhibitManager extends StatefulWidget {
   final List<Exhibit> startingExhibits;
-  ExhibitManager(this.startingExhibits);
+  final String language;
+  ExhibitManager(this.startingExhibits, this.language);
   @override
   State<StatefulWidget> createState() {
     return _ExhibitManagerState();
@@ -386,11 +387,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
           ),
         ),
         drawer: Drawer(
-          // Add a ListView to the drawer. This ensures the user can scroll
-          // through the options in the drawer if there isn't enough vertical
-          // space to fit everything.
           child: ListView(
-            // Important: Remove any padding from the ListView.
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
@@ -400,24 +397,63 @@ class _ExhibitManagerState extends State<ExhibitManager> {
                   Image.asset('assets/launcher/icon.png',width: 100,height: 100,)
                 ],),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Colors.orange,
+                      Colors.redAccent,
+                    ],
+                  ),
                 ),
               ),
               ListTile(
                 title: Text('Дуртай Үзмэрүүд', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => FavoritesPage()),
                   );
                 },
               ),
+              Divider(),
               ListTile(
                 title: Text('Үзмэр унших', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
+                  Navigator.pop(context);
                   _tagRead();
                 },
               ),
+              Divider(),
+              ListTile(
+                title: Text('План зураг', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              Divider(),
+              ListTile(
+                title: Text('Цагийн хуваарь', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              Divider(),
+              ListTile(
+                title: Text('Холбоо барих', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              Divider(),
+              ListTile(
+                title: Text('Хэл сонгох', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              Divider(),
             ],
           ),
         ),
