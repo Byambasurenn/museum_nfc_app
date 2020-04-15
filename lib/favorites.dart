@@ -7,6 +7,7 @@ import 'package:transparent_image/transparent_image.dart';
 import './database_helper.dart';
 import './models/Exhibit.dart';
 import './exhibit_details.dart';
+import 'localizations.dart';
 
 class FavoritesPage extends StatefulWidget {
   @override
@@ -51,7 +52,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Таалагдсан үзмэрүүд', style: TextStyle(fontWeight: FontWeight.w300, color: Colors.white),),
+        title: Text(AppLocalizations.of(context).aBFavorite, style: TextStyle(fontWeight: FontWeight.w300, color: Colors.white),),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -112,7 +113,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.3,
                                 child: Text(
-                                  favoriteExhibits[index].title,
+                                  AppLocalizations.of(context).locale == 'en' ? favoriteExhibits[index].titleEn : favoriteExhibits[index].title,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 20,

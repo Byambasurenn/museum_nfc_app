@@ -21,11 +21,29 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "aBFavorite" : MessageLookupByLibrary.simpleMessage("Favorite exhibits"),
+    "btnPlay" : MessageLookupByLibrary.simpleMessage("Play"),
+    "btnRead" : MessageLookupByLibrary.simpleMessage("Read"),
+    "btnScanExhibit" : MessageLookupByLibrary.simpleMessage("Scan Exhibit"),
+    "btnStop" : MessageLookupByLibrary.simpleMessage("Stop"),
     "btnsubmit" : MessageLookupByLibrary.simpleMessage("Submit"),
+    "dScanExhibit" : MessageLookupByLibrary.simpleMessage("Please scan exhibit"),
+    "drwContacts" : MessageLookupByLibrary.simpleMessage("Contacts"),
+    "drwPlan" : MessageLookupByLibrary.simpleMessage("Plan"),
+    "drwSelectLang" : MessageLookupByLibrary.simpleMessage("Select Language"),
+    "drwTimeTable" : MessageLookupByLibrary.simpleMessage("Time Table"),
+    "lblDate" : MessageLookupByLibrary.simpleMessage("XX Century"),
+    "lblDescription" : MessageLookupByLibrary.simpleMessage("Description"),
+    "lblFeatured" : MessageLookupByLibrary.simpleMessage("Featured"),
+    "lblLocate" : MessageLookupByLibrary.simpleMessage("Winter Palace"),
+    "lblPopular" : MessageLookupByLibrary.simpleMessage("Popular"),
     "lblemail" : MessageLookupByLibrary.simpleMessage("Email"),
     "lblname" : MessageLookupByLibrary.simpleMessage("Name"),
     "lblphone" : MessageLookupByLibrary.simpleMessage("Phone"),
     "locale" : MessageLookupByLibrary.simpleMessage("en"),
-    "title" : MessageLookupByLibrary.simpleMessage("Contact Us")
+    "plExhibit" : MessageLookupByLibrary.simpleMessage("Bogd Khaan Palace Exhibit"),
+    "title" : MessageLookupByLibrary.simpleMessage("Contact Us"),
+    "titleMuseum" : MessageLookupByLibrary.simpleMessage("Bogd Khaan Palace Museum"),
+    "wPage" : MessageLookupByLibrary.simpleMessage("Page")
   };
 }

@@ -16,11 +16,11 @@ import './exhibits.dart';
 import './exhibit_details.dart';
 import './models/Exhibit.dart';
 import './favorites.dart';
+import 'localizations.dart';
 
 class ExhibitManager extends StatefulWidget {
-  final List<Exhibit> startingExhibits;
   final String language;
-  ExhibitManager(this.startingExhibits, this.language);
+  ExhibitManager(this.language);
   @override
   State<StatefulWidget> createState() {
     return _ExhibitManagerState();
@@ -30,14 +30,12 @@ class ExhibitManager extends StatefulWidget {
 
 class _ExhibitManagerState extends State<ExhibitManager> {
   ValueNotifier<dynamic> result = ValueNotifier(null);
-  List<Exhibit> _exhibits = [];
   Exhibit mainEx;
   List<Exhibit> mainExList;
   bool responseBack = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   void initState() {
-    _exhibits = widget.startingExhibits;
     fetchAllExhibit();
     super.initState();
 //    SystemChrome.setEnabledSystemUIOverlays([]);
@@ -45,7 +43,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
 
   void fetchExhibit(String nfcId) async {
     final response =
-        await http.get('http://ac01024b.ngrok.io/json/exhibits/' + nfcId + '/');
+        await http.get('http://08430bc6.ngrok.io/json/exhibits/' + nfcId + '/');
     if (response.statusCode == 200) {
       Exhibit tempEx =
           Exhibit.fromJson(json.decode(utf8.decode(response.bodyBytes)));
@@ -60,7 +58,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
 
   void fetchAllExhibit() async {
     final response =
-    await http.get('http://ac01024b.ngrok.io/json/exhibits/');
+    await http.get('http://08430bc6.ngrok.io/json/exhibits/');
     if (response.statusCode == 200) {
       List<Exhibit> tempExList = new List();
       Map<String,dynamic> tempJson = json.decode(utf8.decode(response.bodyBytes));
@@ -74,7 +72,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
         responseBack = true;
       });
     } else {
-      throw Exception('Failed to load exhibit');
+      throw Exception('Failed to load all exhibits');
     }
   }
 
@@ -114,7 +112,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
                   _scaffoldKey.currentState.openDrawer();
                 }),//_scaffoldKey.currentState.openDrawer
             Text(
-              'Богд Хааны Ордон Музей',
+              AppLocalizations.of(context).titleMuseum,
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -159,7 +157,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  'Онцлох...',
+                  AppLocalizations.of(context).lblFeatured+'...',
                   style: TextStyle(fontSize: 30, color: Colors.white, fontFamily: 'Cats'),
                 ),
               ),
@@ -213,7 +211,8 @@ class _ExhibitManagerState extends State<ExhibitManager> {
                                 child: SizedBox(
                                   width: MediaQuery.of(context).size.width*0.6,
                                   child: Text(
-                                    mainExList==null ? 'Богд Хааны Ордны үзмэр' :
+                                    mainExList==null ? AppLocalizations.of(context).plExhibit :
+                                    AppLocalizations.of(context).locale == 'en' ? mainExList[i].titleEn :
                                     mainExList[i].title,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 30, fontFamily: 'Caslon'),
@@ -244,7 +243,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
                                     color: Theme.of(context).primaryColor,
                                     textColor: Colors.white,
                                     child: Text(
-                                      'үзэх'.toUpperCase(),
+                                      AppLocalizations.of(context).btnRead.toUpperCase(),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 10,
@@ -262,7 +261,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  'Эрэлттэй...',
+                  AppLocalizations.of(context).lblPopular+'...',
                   style: TextStyle(fontSize: 30, color: Colors.white, fontFamily: 'Cats'),
                 ),
               ),
@@ -316,7 +315,8 @@ class _ExhibitManagerState extends State<ExhibitManager> {
                                   child: SizedBox(
                                     width: MediaQuery.of(context).size.width*0.6,
                                     child: Text(
-                                      mainExList==null ? 'Богд Хааны Ордны үзмэр' :
+                                      mainExList==null ? AppLocalizations.of(context).plExhibit :
+                                      AppLocalizations.of(context).locale == 'en' ? mainExList[mainExList.length-i].titleEn :
                                       mainExList[mainExList.length-i].title,
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 30, fontFamily: 'Caslon'),
@@ -396,7 +396,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
             children: <Widget>[
               DrawerHeader(
                 child: Column(children: <Widget>[
-                  Text('Богд Хааны Ордон Музей', style: TextStyle(fontWeight: FontWeight.w300, color: Colors.white),),
+                  Text(AppLocalizations.of(context).titleMuseum, style: TextStyle(fontWeight: FontWeight.w300, color: Colors.white),),
                   SizedBox(height: 10,),
                   Image.asset('assets/launcher/icon.png',width: 100,height: 100,)
                 ],),
@@ -413,7 +413,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
               ),
               ListTile(
                 leading: Icon(Icons.favorite),
-                title: Text('Дуртай Үзмэрүүд', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
+                title: Text(AppLocalizations.of(context).aBFavorite, style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -425,7 +425,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
               Divider(),
               ListTile(
                 leading: Icon(Icons.add_to_home_screen),
-                title: Text('Үзмэр унших', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
+                title: Text(AppLocalizations.of(context).btnScanExhibit, style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
                   Navigator.pop(context);
                   _tagRead();
@@ -434,7 +434,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
               Divider(),
               ListTile(
                 leading: Icon(Icons.map),
-                title: Text('План зураг', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
+                title: Text(AppLocalizations.of(context).drwPlan, style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -446,7 +446,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
               Divider(),
               ListTile(
                 leading: Icon(Icons.access_time),
-                title: Text('Цагийн хуваарь', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
+                title: Text(AppLocalizations.of(context).drwTimeTable, style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -458,7 +458,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
               Divider(),
               ListTile(
                 leading: Icon(Icons.contacts),
-                title: Text('Холбоо барих', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
+                title: Text(AppLocalizations.of(context).drwContacts, style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -470,7 +470,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
               Divider(),
               ListTile(
                 leading: Icon(Icons.language),
-                title: Text('Хэл сонгох', style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
+                title: Text(AppLocalizations.of(context).drwSelectLang, style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -495,7 +495,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
             color: Theme.of(context).primaryColor,
             textColor: Colors.white,
             child: Text(
-              'Үзмэр унших',
+              AppLocalizations.of(context).btnScanExhibit,
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -512,7 +512,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
         context: context,
         child: new AlertDialog(
           backgroundColor: Colors.white12,
-          title: new Text("Үзмэр уншуулна уу"),
+          title: new Text(AppLocalizations.of(context).dScanExhibit, style: TextStyle(color: Colors.white),),
           content: new Image.asset("assets/nfc.gif"),
         ));
     NfcManager.instance.startTagSession(onDiscovered: (NfcTag tag) async {

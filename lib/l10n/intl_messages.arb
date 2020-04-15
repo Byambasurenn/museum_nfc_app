@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-04-14T17:38:54.681634",
+  "@@last_modified": "2020-04-15T15:40:54.033270",
   "title": "Contact Us",
   "@title": {
     "type": "text",
@@ -27,6 +27,96 @@
   },
   "lblemail": "Email",
   "@lblemail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleMuseum": "Bogd Khaan Palace Museum",
+  "@titleMuseum": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "aBFavorite": "Favorite exhibits",
+  "@aBFavorite": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnScanExhibit": "Scan Exhibit",
+  "@btnScanExhibit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "drwPlan": "Plan",
+  "@drwPlan": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "drwTimeTable": "Time Table",
+  "@drwTimeTable": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "drwContacts": "Contacts",
+  "@drwContacts": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "drwSelectLang": "Select Language",
+  "@drwSelectLang": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "wPage": "Page",
+  "@wPage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lblPopular": "Popular",
+  "@lblPopular": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lblFeatured": "Featured",
+  "@lblFeatured": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lblDescription": "Description",
+  "@lblDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnPlay": "Play",
+  "@btnPlay": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnStop": "Stop",
+  "@btnStop": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dScanExhibit": "Please scan exhibit",
+  "@dScanExhibit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnRead": "Read",
+  "@btnRead": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "plExhibit": "Bogd Khaan Palace Exhibit",
+  "@plExhibit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lblDate": "XX Century",
+  "@lblDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lblLocate": "Winter Palace",
+  "@lblLocate": {
     "type": "text",
     "placeholders": {}
   }

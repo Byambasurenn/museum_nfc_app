@@ -1,6 +1,6 @@
 {
-  "@@last_modified": "2020-04-14T17:38:54.681634",
-  "title": "Холбогдох",
+  "@@last_modified": "2020-04-15T15:40:54.033270",
+  "title": "Холбоо Барих",
   "@title": {
     "type": "text",
     "placeholders": {}
@@ -27,6 +27,96 @@
   },
   "lblemail": "И-мейл",
   "@lblemail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleMuseum": "Богд Хааны Ордон Музей",
+  "@titleMuseum": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "aBFavorite": "Таалагдсан үзмэрүүд",
+  "@aBFavorite": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnScanExhibit": "Үзмэр уншуулах",
+  "@btnScanExhibit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "drwPlan": "План зураг",
+  "@drwPlan": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "drwTimeTable": "Цагийн Хуваарь",
+  "@drwTimeTable": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "drwContacts": "Холбоо Барих",
+  "@drwContacts": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "drwSelectLang": "Хэл Сонгох",
+  "@drwSelectLang": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "wPage": "Хуудас",
+  "@wPage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lblPopular": "Эрэлттэй",
+  "@lblPopular": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lblFeatured": "Онцлог",
+  "@lblFeatured": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lblDescription": "Тайлбар",
+  "@lblDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnPlay": "Сонсох",
+  "@btnPlay": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnStop": "Зогсоох",
+  "@btnStop": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dScanExhibit": "Үзмэр уншуулна уу",
+  "@dScanExhibit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnRead": "Үзэх",
+  "@btnRead": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "plExhibit": "Богд Хааны Ордны Үзмэр",
+  "@plExhibit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lblDate": "XX зууны эхэн",
+  "@lblDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lblLocate": "Өвлийн Ордон",
+  "@lblLocate": {
     "type": "text",
     "placeholders": {}
   }

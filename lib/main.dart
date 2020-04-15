@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:museumnfcapp/exhibit_manager.dart';
 import 'package:museumnfcapp/localizations.dart';
 import 'package:museumnfcapp/LocaleHelper.dart';
+import 'package:museumnfcapp/select_language.dart';
 
-import './select_language.dart';
 import 'localizations.dart';
 
 void main() => runApp(MyApp());
@@ -25,7 +26,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     helper.onLocaleChanged = onLocaleChange;
-    _specificLocalizationDelegate = SpecificLocalizationDelegate(new Locale("mn"));
+    _specificLocalizationDelegate = SpecificLocalizationDelegate(new Locale("en"));
   }
   
   onLocaleChange(Locale locale){
@@ -54,11 +55,14 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.orange,
         accentColor: Colors.orangeAccent,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-//      SelectLanguagePage(),
+      home:
+//      MyHomePage(title: 'Flutter Demo Home Page'),
+      SelectLanguagePage(title: 'Flutterly',),
     );
   }
 }
+
+
 
 class MyHomePage extends StatefulWidget {
   MyHomePage( {Key key, this.title}) : super(key: key);

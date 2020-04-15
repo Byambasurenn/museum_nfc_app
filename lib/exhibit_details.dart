@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -7,6 +8,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'image_zoom.dart';
 
 import './database_helper.dart';
+import 'localizations.dart';
 
 class ExhibitDetailsPage extends StatefulWidget {
   final Exhibit exhibitStart;
@@ -64,9 +66,12 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
     Exhibit exhibitO = Exhibit();
     exhibitO.nfcId = exhibit.nfcId;
     exhibitO.title = exhibit.title;
+    exhibitO.titleEn = exhibit.titleEn;
     exhibitO.description = exhibit.description;
+    exhibitO.descriptionEn = exhibit.descriptionEn;
     exhibitO.image = exhibit.image;
     exhibitO.audio = exhibit.audio;
+    exhibitO.audioEn = exhibit.audioEn;
     DatabaseHelper helper = DatabaseHelper.instance;
     int id = await helper.insert(exhibitO);
     print('inserted row: $id');
@@ -106,7 +111,7 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ImageZoomPage(exhibit.image, exhibit.title))
+                      ImageZoomPage(exhibit.image, AppLocalizations.of(context).locale == 'en' ? exhibit.titleEn : exhibit.title))
 //            MaterialPageRoute(builder: (context) => ImageZoomPage(exhibit.image)),
               );
         },
@@ -129,7 +134,7 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      exhibit.title,
+                      AppLocalizations.of(context).locale == 'en' ? exhibit.titleEn : exhibit.title,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 30.0,
@@ -149,7 +154,7 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
                             color: Colors.grey,
                             borderRadius: BorderRadius.circular(20.0)),
                         child: Text(
-                          "XX зууны эхэн үе",
+                          AppLocalizations.of(context).lblDate,
                           style: TextStyle(color: Colors.white, fontSize: 13.0),
                         ),
                       ),
@@ -188,55 +193,6 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.star,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                      Icon(
-                                        Icons.star,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                      Icon(
-                                        Icons.star,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                      Icon(
-                                        Icons.star,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                      Icon(
-                                        Icons.star_border,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ],
-                                  ),
-                                  Text.rich(
-                                    TextSpan(children: [
-                                      WidgetSpan(
-                                          child: Icon(
-                                        Icons.location_on,
-                                        size: 16.0,
-                                        color: Colors.grey,
-                                      )),
-                                      TextSpan(text: "Өвлийн ордон")
-                                    ]),
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 12.0),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 30.0),
                         Container(
                           child: isPlaying
                               ? SizedBox(
@@ -248,7 +204,7 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
                                     color: Theme.of(context).primaryColor,
                                     textColor: Colors.white,
                                     child: Text(
-                                      "Зогсоох",
+                                      AppLocalizations.of(context).btnStop,
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal),
                                     ),
@@ -273,7 +229,7 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
                                     color: Theme.of(context).primaryColor,
                                     textColor: Colors.white,
                                     child: Text(
-                                      "Сонсох",
+                                      AppLocalizations.of(context).btnPlay,
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal),
                                     ),
@@ -291,14 +247,31 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
                                 ),
                         ),
                         const SizedBox(height: 30.0),
-                        Text(
-                          "Тайлбар".toUpperCase(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 14.0),
-                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                          Text(
+                            AppLocalizations.of(context).lblDescription.toUpperCase(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 14.0),
+                          ),
+                          Text.rich(
+                            TextSpan(children: [
+                              WidgetSpan(
+                                  child: Icon(
+                                    Icons.location_on,
+                                    size: 16.0,
+                                    color: Colors.grey,
+                                  )),
+                              TextSpan(text: AppLocalizations.of(context).lblLocate)
+                            ]),
+                            style: TextStyle(
+                                color: Colors.grey, fontSize: 12.0),
+                          ),
+                        ],),
                         const SizedBox(height: 10.0),
                         Text(
-                          exhibit.description,
+                          AppLocalizations.of(context).locale == 'en' ? exhibit.descriptionEn : exhibit.description,
                           textAlign: TextAlign.justify,
                           style: TextStyle(
                               fontWeight: FontWeight.w300, fontSize: 14.0),
@@ -324,22 +297,22 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: BottomNavigationBar(
-                backgroundColor: Colors.white54,
-                elevation: 0,
-                selectedItemColor: Colors.black,
-                items: [
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.search), title: Text("Хайх")),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.favorite_border), title: Text("Нэмэх")),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.settings), title: Text("Тохиргоо")),
-                ],
-              ),
-            )
+//            Align(
+//              alignment: Alignment.bottomLeft,
+//              child: BottomNavigationBar(
+//                backgroundColor: Colors.white54,
+//                elevation: 0,
+//                selectedItemColor: Colors.black,
+//                items: [
+//                  BottomNavigationBarItem(
+//                      icon: Icon(Icons.search), title: Text("Хайх")),
+//                  BottomNavigationBarItem(
+//                      icon: Icon(Icons.favorite_border), title: Text("Нэмэх")),
+//                  BottomNavigationBarItem(
+//                      icon: Icon(Icons.settings), title: Text("Тохиргоо")),
+//                ],
+//              ),
+//            )
           ],
         ),
       ),

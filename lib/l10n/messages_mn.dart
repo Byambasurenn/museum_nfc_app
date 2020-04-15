@@ -21,11 +21,29 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "aBFavorite" : MessageLookupByLibrary.simpleMessage("Таалагдсан үзмэрүүд"),
+    "btnPlay" : MessageLookupByLibrary.simpleMessage("Сонсох"),
+    "btnRead" : MessageLookupByLibrary.simpleMessage("Үзэх"),
+    "btnScanExhibit" : MessageLookupByLibrary.simpleMessage("Үзмэр уншуулах"),
+    "btnStop" : MessageLookupByLibrary.simpleMessage("Зогсоох"),
     "btnsubmit" : MessageLookupByLibrary.simpleMessage("Илгээх"),
+    "dScanExhibit" : MessageLookupByLibrary.simpleMessage("Үзмэр уншуулна уу"),
+    "drwContacts" : MessageLookupByLibrary.simpleMessage("Холбоо Барих"),
+    "drwPlan" : MessageLookupByLibrary.simpleMessage("План зураг"),
+    "drwSelectLang" : MessageLookupByLibrary.simpleMessage("Хэл Сонгох"),
+    "drwTimeTable" : MessageLookupByLibrary.simpleMessage("Цагийн Хуваарь"),
+    "lblDate" : MessageLookupByLibrary.simpleMessage("XX зууны эхэн"),
+    "lblDescription" : MessageLookupByLibrary.simpleMessage("Тайлбар"),
+    "lblFeatured" : MessageLookupByLibrary.simpleMessage("Онцлог"),
+    "lblLocate" : MessageLookupByLibrary.simpleMessage("Өвлийн Ордон"),
+    "lblPopular" : MessageLookupByLibrary.simpleMessage("Эрэлттэй"),
     "lblemail" : MessageLookupByLibrary.simpleMessage("И-мейл"),
     "lblname" : MessageLookupByLibrary.simpleMessage("Нэр"),
     "lblphone" : MessageLookupByLibrary.simpleMessage("Утас"),
     "locale" : MessageLookupByLibrary.simpleMessage("mn"),
-    "title" : MessageLookupByLibrary.simpleMessage("Холбогдох")
+    "plExhibit" : MessageLookupByLibrary.simpleMessage("Богд Хааны Ордны Үзмэр"),
+    "title" : MessageLookupByLibrary.simpleMessage("Холбоо Барих"),
+    "titleMuseum" : MessageLookupByLibrary.simpleMessage("Богд Хааны Ордон Музей"),
+    "wPage" : MessageLookupByLibrary.simpleMessage("Хуудас")
   };
 }

@@ -47,6 +47,79 @@ class AppLocalizations {
   String get lblemail {
     return Intl.message('Email', name: 'lblemail');
   }
+
+  String get titleMuseum {
+    return Intl.message('Bogd Khaan Palace Museum', name: 'titleMuseum');
+  }
+
+  String get aBFavorite {
+    return Intl.message('Favorite exhibits', name: 'aBFavorite');
+  }
+
+  String get btnScanExhibit {
+    return Intl.message('Scan Exhibit', name: 'btnScanExhibit');
+  }
+
+  String get drwPlan {
+    return Intl.message('Plan', name: 'drwPlan');
+  }
+
+  String get drwTimeTable {
+    return Intl.message('Time Table', name: 'drwTimeTable');
+  }
+
+  String get drwContacts {
+    return Intl.message('Contacts', name: 'drwContacts');
+  }
+
+  String get drwSelectLang {
+    return Intl.message('Select Language', name: 'drwSelectLang');
+  }
+
+  String get wPage {
+    return Intl.message('Page', name: 'wPage');
+  }
+
+  String get lblPopular {
+    return Intl.message('Popular', name: 'lblPopular');
+  }
+
+  String get lblFeatured {
+    return Intl.message('Featured', name: 'lblFeatured');
+  }
+
+  String get lblDescription {
+    return Intl.message('Description', name: 'lblDescription');
+  }
+
+  String get btnPlay {
+    return Intl.message('Play', name: 'btnPlay');
+  }
+
+  String get btnStop {
+    return Intl.message('Stop', name: 'btnStop');
+  }
+
+  String get dScanExhibit {
+    return Intl.message('Please scan exhibit', name: 'dScanExhibit');
+  }
+
+  String get btnRead {
+    return Intl.message('Read', name: 'btnRead');
+  }
+
+  String get plExhibit {
+    return Intl.message('Bogd Khaan Palace Exhibit', name: 'plExhibit');
+  }
+
+  String get lblDate {
+    return Intl.message('XX Century', name: 'lblDate');
+  }
+
+  String get lblLocate {
+    return Intl.message('Winter Palace', name: 'lblLocate');
+  }
+
 }
 
 class SpecificLocalizationDelegate
