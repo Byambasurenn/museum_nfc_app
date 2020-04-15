@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:museumnfcapp/select_language.dart';
@@ -10,6 +12,8 @@ import 'package:http/http.dart' as http;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:convert';
 import './exhibits.dart';
@@ -17,6 +21,12 @@ import './exhibit_details.dart';
 import './models/Exhibit.dart';
 import './favorites.dart';
 import 'localizations.dart';
+
+Future<File> file(String filename) async {
+  Directory dir = await getApplicationDocumentsDirectory();
+  String pathName = p.join(dir.path, filename);
+  return File(pathName);
+}
 
 class ExhibitManager extends StatefulWidget {
   final String language;
@@ -62,12 +72,10 @@ class _ExhibitManagerState extends State<ExhibitManager> {
     if (response.statusCode == 200) {
       List<Exhibit> tempExList = new List();
       Map<String,dynamic> tempJson = json.decode(utf8.decode(response.bodyBytes));
-      print(tempJson['results'][6]['description']);
       for(var i = 0; i<tempJson['count']; i++) {
         tempExList.add(Exhibit.fromJson(tempJson['results'][i]));
       }
       setState(() {
-        print(tempExList);
         mainExList = tempExList;
         responseBack = true;
       });
@@ -135,7 +143,12 @@ class _ExhibitManagerState extends State<ExhibitManager> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return WillPopScope(
+        onWillPop: (){
+//           NfcManager.instance.stopSession();
+//           return null;
+        },
+        child: Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.bottomCenter,
@@ -197,7 +210,8 @@ class _ExhibitManagerState extends State<ExhibitManager> {
                                 borderRadius: BorderRadius.circular(15)),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15),
-                                  child: mainExList==null ? Center(child: CircularProgressIndicator(),) : CachedNetworkImage(
+                                  child: mainExList==null ? Center(child: CircularProgressIndicator(),) :
+                                  CachedNetworkImage(
                                     imageUrl: mainExList[i].image,
                                     fit: BoxFit.fill,
                                     width: double.infinity,
@@ -473,10 +487,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
                 title: Text(AppLocalizations.of(context).drwSelectLang, style: TextStyle(fontWeight: FontWeight.w300,fontSize: 20),),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SelectLanguagePage()),
-                  );
+                  Navigator.pop(context);
                 },
               ),
               Divider(),
@@ -504,14 +515,14 @@ class _ExhibitManagerState extends State<ExhibitManager> {
           ),
         ),)
       ),
-    );
+    ),);
   }
 
   void _tagRead() {
-    showDialog(
+        child: showDialog(
         context: context,
         child: new AlertDialog(
-          backgroundColor: Colors.white12,
+          backgroundColor: Colors.transparent,
           title: new Text(AppLocalizations.of(context).dScanExhibit, style: TextStyle(color: Colors.white),),
           content: new Image.asset("assets/nfc.gif"),
         ));

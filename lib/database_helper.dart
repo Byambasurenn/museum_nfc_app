@@ -104,10 +104,7 @@ class DatabaseHelper {
     if (maps.length > 0) {
       for(var i = 0; i<maps.length; i++){
         exList.add(Exhibit.fromJson(maps[i]));
-        print(maps[i].keys);
-        print(exList);
       }
-      print(exList);
       return exList;
     }
     return exList;
