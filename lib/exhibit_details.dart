@@ -51,6 +51,7 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
           _position = p;
         });
   }
+
   play() {
     advancedPlayer.play(exhibit.audio);
     advancedPlayer.setReleaseMode(ReleaseMode.LOOP);
@@ -74,17 +75,23 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
     exhibitO.audioEn = exhibit.audioEn;
     DatabaseHelper helper = DatabaseHelper.instance;
     int id = await helper.insert(exhibitO);
+    SnackBar(
+      content: Text(exhibit.title + ' жагсаалтанд нэмэгдлээ'),
+    );
     print('inserted row: $id');
   }
 
-  _delete(String nfcId) async{
+  _delete(String nfcId) async {
     DatabaseHelper helper = DatabaseHelper.instance;
     int result = await helper.queryDeleteRow(nfcId);
-    if(result>0){
+    if (result > 0) {
       print('$result row deleted');
-    }else{
+    } else {
       print('failed to delete row');
     }
+    SnackBar(
+      content: Text(exhibit.title + 'жагсаалтаас хасагдлаа'),
+    );
   }
 
   Future<bool> _isFavorite() async {
@@ -104,199 +111,218 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: InkWell(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ImageZoomPage(exhibit.image, AppLocalizations.of(context).locale == 'en' ? exhibit.titleEn : exhibit.title))
+    return Scaffold(body: Builder(
+      builder: (context) {
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ImageZoomPage(
+                        exhibit.image,
+                        AppLocalizations.of(context).locale == 'en'
+                            ? exhibit.titleEn
+                            : exhibit.title))
 //            MaterialPageRoute(builder: (context) => ImageZoomPage(exhibit.image)),
-              );
-        },
-        child: Stack(
-          children: <Widget>[
-            Container(
-              foregroundDecoration: BoxDecoration(color: Colors.black26),
-              height: 350,
-              width: double.infinity,
-              child: CachedNetworkImage(
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  imageUrl: exhibit.image),
-            ),
-            SingleChildScrollView(
-              padding: const EdgeInsets.only(top: 16.0, bottom: 20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 250,),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(
-                      AppLocalizations.of(context).locale == 'en' ? exhibit.titleEn : exhibit.title,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30.0,
-                          fontFamily: 'Caslon',
-                          fontWeight: FontWeight.w300),
+                );
+          },
+          child: Stack(
+            children: <Widget>[
+              Container(
+                foregroundDecoration: BoxDecoration(color: Colors.black26),
+                height: 350,
+                width: double.infinity,
+                child: CachedNetworkImage(
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    imageUrl: exhibit.image),
+              ),
+              SingleChildScrollView(
+                padding: const EdgeInsets.only(top: 16.0, bottom: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 250,
                     ),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      const SizedBox(width: 16.0),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8.0,
-                          horizontal: 16.0,
-                        ),
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(20.0)),
-                        child: Text(
-                          AppLocalizations.of(context).lblDate,
-                          style: TextStyle(color: Colors.white, fontSize: 13.0),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        AppLocalizations.of(context).locale == 'en'
+                            ? exhibit.titleEn
+                            : exhibit.title,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30.0,
+                            fontFamily: 'Caslon',
+                            fontWeight: FontWeight.w300),
                       ),
-                      Spacer(),
-                      Container(
-                        child: isAddedToFav ?
-                        IconButton(
-                          color: Colors.red,
-                          icon: Icon(Icons.favorite),
-                          onPressed: () {
-                            _delete(exhibit.nfcId);
-                            setState(() {
-                              isAddedToFav = false;
-                            });
-                          },
-                        )
-                            :
-                        IconButton(
-                          color: Colors.white,
-                          icon: Icon(Icons.favorite_border),
-                          onPressed: () {
-                            _save();
-                            setState(() {
-                              isAddedToFav = true;
-                            });
-                          },
-                        ),
-                      )
-
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(32.0),
-                    color: Colors.white,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
+                    ),
+                    Row(
                       children: <Widget>[
+                        const SizedBox(width: 16.0),
                         Container(
-                          child: isPlaying
-                              ? SizedBox(
-                                  width: double.infinity,
-                                  child: RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0)),
-                                    color: Theme.of(context).primaryColor,
-                                    textColor: Colors.white,
-                                    child: Text(
-                                      AppLocalizations.of(context).btnStop,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.normal),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 16.0,
-                                      horizontal: 32.0,
-                                    ),
-                                    onPressed: () {
-                                      pause();
-                                      setState(() {
-                                        isPlaying = false;
-                                      });
-                                    },
-                                  ),
-                                )
-                              : SizedBox(
-                                  width: double.infinity,
-                                  child: RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0)),
-                                    color: Theme.of(context).primaryColor,
-                                    textColor: Colors.white,
-                                    child: Text(
-                                      AppLocalizations.of(context).btnPlay,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.normal),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 16.0,
-                                      horizontal: 32.0,
-                                    ),
-                                    onPressed: () {
-                                      play();
-                                      setState(() {
-                                        isPlaying = true;
-                                      });
-                                    },
-                                  ),
-                                ),
-                        ),
-                        const SizedBox(height: 30.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                          Text(
-                            AppLocalizations.of(context).lblDescription.toUpperCase(),
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 14.0),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8.0,
+                            horizontal: 16.0,
                           ),
-                          Text.rich(
-                            TextSpan(children: [
-                              WidgetSpan(
-                                  child: Icon(
+                          decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(20.0)),
+                          child: Text(
+                            AppLocalizations.of(context).lblDate,
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 13.0),
+                          ),
+                        ),
+                        Spacer(),
+                        Container(
+                          child: isAddedToFav
+                              ? IconButton(
+                                  color: Colors.red,
+                                  icon: Icon(Icons.favorite),
+                                  onPressed: () {
+                                    _delete(exhibit.nfcId);
+                                    setState(() {
+                                      isAddedToFav = false;
+                                    });
+                                    SnackBar mySBar = SnackBar(content: Text(exhibit.title + ' үзмэр дуртай жагсаалтаас хасагдлаа!'),duration: Duration(seconds: 2),);
+                                    Scaffold.of(context).showSnackBar(mySBar);
+                                  },
+                                )
+                              : IconButton(
+                                  color: Colors.white,
+                                  icon: Icon(Icons.favorite_border),
+                                  onPressed: () {
+                                    _save();
+                                    setState(() {
+                                      isAddedToFav = true;
+                                    });
+                                    SnackBar mySBar = SnackBar(content: Text(exhibit.title + ' үзмэр дуртай жагсаалтанд нэмэгдлээ!'),duration: Duration(seconds: 2),);
+                                    Scaffold.of(context).showSnackBar(mySBar);
+                                  },
+                                ),
+                        )
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(32.0),
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Container(
+                            child: isPlaying
+                                ? SizedBox(
+                                    width: double.infinity,
+                                    child: RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0)),
+                                      color: Theme.of(context).primaryColor,
+                                      textColor: Colors.white,
+                                      child: Text(
+                                        AppLocalizations.of(context).btnStop,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 16.0,
+                                        horizontal: 32.0,
+                                      ),
+                                      onPressed: () {
+                                        pause();
+                                        setState(() {
+                                          isPlaying = false;
+                                        });
+                                      },
+                                    ),
+                                  )
+                                : SizedBox(
+                                    width: double.infinity,
+                                    child: RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0)),
+                                      color: Theme.of(context).primaryColor,
+                                      textColor: Colors.white,
+                                      child: Text(
+                                        AppLocalizations.of(context).btnPlay,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 16.0,
+                                        horizontal: 32.0,
+                                      ),
+                                      onPressed: () {
+                                        play();
+                                        setState(() {
+                                          isPlaying = true;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                          ),
+                          const SizedBox(height: 30.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                AppLocalizations.of(context)
+                                    .lblDescription
+                                    .toUpperCase(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.0),
+                              ),
+                              Text.rich(
+                                TextSpan(children: [
+                                  WidgetSpan(
+                                      child: Icon(
                                     Icons.location_on,
                                     size: 16.0,
                                     color: Colors.grey,
                                   )),
-                              TextSpan(text: AppLocalizations.of(context).lblLocate)
-                            ]),
-                            style: TextStyle(
-                                color: Colors.grey, fontSize: 12.0),
+                                  TextSpan(
+                                      text: AppLocalizations.of(context)
+                                          .lblLocate)
+                                ]),
+                                style: TextStyle(
+                                    color: Colors.grey, fontSize: 12.0),
+                              ),
+                            ],
                           ),
-                        ],),
-                        const SizedBox(height: 10.0),
-                        Text(
-                          AppLocalizations.of(context).locale == 'en' ? exhibit.descriptionEn : exhibit.description,
-                          textAlign: TextAlign.justify,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300, fontSize: 14.0),
-                        ),
-                      ],
+                          const SizedBox(height: 10.0),
+                          Text(
+                            AppLocalizations.of(context).locale == 'en'
+                                ? exhibit.descriptionEn
+                                : exhibit.description,
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300, fontSize: 14.0),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                centerTitle: true,
-                title: Text(
-                  exhibit.nfcId,
-                  style:
-                      TextStyle(fontSize: 16.0, fontWeight: FontWeight.normal),
+                  ],
                 ),
               ),
-            ),
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  centerTitle: true,
+                  title: Text(
+                    exhibit.nfcId,
+                    style: TextStyle(
+                        fontSize: 16.0, fontWeight: FontWeight.normal),
+                  ),
+                ),
+              ),
 //            Align(
 //              alignment: Alignment.bottomLeft,
 //              child: BottomNavigationBar(
@@ -313,9 +339,10 @@ class _ExhibitDetailsPageState extends State<ExhibitDetailsPage> {
 //                ],
 //              ),
 //            )
-          ],
-        ),
-      ),
-    );
+            ],
+          ),
+        );
+      },
+    ));
   }
 }

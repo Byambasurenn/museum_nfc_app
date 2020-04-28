@@ -53,7 +53,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
 
   void fetchExhibit(String nfcId) async {
     final response =
-        await http.get('http://08430bc6.ngrok.io/json/exhibits/' + nfcId + '/');
+        await http.get('http://efdcc9ce.ngrok.io/json/exhibits/' + nfcId + '/');
     if (response.statusCode == 200) {
       Exhibit tempEx =
           Exhibit.fromJson(json.decode(utf8.decode(response.bodyBytes)));
@@ -62,13 +62,29 @@ class _ExhibitManagerState extends State<ExhibitManager> {
         responseBack = true;
       });
     } else {
+      Navigator.pop(context);
+      showDialog(
+          context: context,
+          child: new AlertDialog(
+            backgroundColor: Colors.white,
+            title: new Text('Үзмэр олдсонгүй', style: TextStyle(color: Colors.black),),
+            content:  Text('Зөвхөн үзмэрийн NFC чипийг уншуулна уу?'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ));
       throw Exception('Failed to load exhibit');
     }
   }
 
   void fetchAllExhibit() async {
     final response =
-    await http.get('http://08430bc6.ngrok.io/json/exhibits/');
+    await http.get('http://efdcc9ce.ngrok.io/json/exhibits/');
     if (response.statusCode == 200) {
       List<Exhibit> tempExList = new List();
       Map<String,dynamic> tempJson = json.decode(utf8.decode(response.bodyBytes));
@@ -519,7 +535,7 @@ class _ExhibitManagerState extends State<ExhibitManager> {
   }
 
   void _tagRead() {
-        child: showDialog(
+        showDialog(
         context: context,
         child: new AlertDialog(
           backgroundColor: Colors.transparent,
@@ -540,9 +556,9 @@ class _ExhibitManagerState extends State<ExhibitManager> {
         await fetchExhibit(temp);
       }
       NfcManager.instance.stopSession();
-      Navigator.pop(context);
 
       if (responseBack) {
+        Navigator.pop(context);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ExhibitDetailsPage(mainEx)),
